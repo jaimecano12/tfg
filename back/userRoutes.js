@@ -27,6 +27,11 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'El usuario ya está registrado' });
     }
 
+    const existingName = await User.findOne({username});
+    if (existingName) {
+      return res.status(400).json({ error: 'Nombre de usuario en uso, por favor utilize otro.' });
+    }
+
     // Crear un nuevo usuario
     const newUser = new User({ username, email, password });
     await newUser.save();
